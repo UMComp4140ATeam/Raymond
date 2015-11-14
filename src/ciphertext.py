@@ -5,8 +5,8 @@ An immutable class to hold a ciphertext for the LWE fully homomorphic encryption
 it remains in a valid state.
 """
 class Ciphertext(tuple):
-    def __new__(cls, coefficient_vector, ciphertext_vector, level):
-        return tuple.__new__(cls, (coefficient_vector, ciphertext_vector, level))
+    def __new__(cls, coefficient_vector, ciphertext, level):
+        return tuple.__new__(cls, (coefficient_vector, ciphertext, level))
 
     @property
     def coefficient_vector(self):

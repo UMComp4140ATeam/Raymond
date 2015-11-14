@@ -9,15 +9,14 @@ A simple random vector generator. It is initialized with n, q, and seed. To gene
 '''
 class RVG(object):
     def __init__(self, n, q, seed):
-        self.seed = seed
-        self.n = n #number of dimensions
-        self.q = q #some large number?
+        self.__seed__ = seed
+        self.__n__ = n #number of dimensions
+        self.__q__ = q #some large number?
+        self.__g__ = random.SystemRandom(self.__seed__)
 
     def generate(self, count=1):
-        random.seed(self.seed)
         for i in range(0, count):
-            v = numpy.ndarray(self.n, dtype=numpy.integer)
-            for j in range(0, self.n):
-                v[j] = random.randint(0, self.q)
+            v = numpy.ndarray(self.__n__, dtype=numpy.integer)
+            for j in range(0, self.__n__):
+                v[j] = self.__g__.randint(0, self.__q__) #% self.q #.randint(0, self.q)
             yield v
-

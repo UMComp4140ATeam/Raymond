@@ -9,19 +9,21 @@ import rvg
 Generates the secret keys, the evaluation key, and the public key that will be used in the homomorphic encryption scheme.
 '''
 class SomewhatHomomorphicKeygen(object):
-    def __init__(self, dimension, multiplicative_depth, odd_modulus, matrix_rows, seed=1, error_distribution=None, random_vector_generator=None):
+    def __init__(self, dimension, multiplicative_depth, odd_modulus, matrix_rows, seed=1):
         self.__dimension = dimension
         self.__multiplicative_depth = multiplicative_depth
         self.__odd_modulus = odd_modulus
         self.__matrix_rows = matrix_rows
-        self.__error_distribution = error_distribution
-        if error_distribution is None:
-            self.__error_distribution = simple_error_distribution.SimpleErrorDistribution(odd_modulus, seed)
-            
-        self.__random_vector_generator = random_vector_generator
-        if random_vector_generator is None:
-            self.__random_vector_generator = rvg.RVG(dimension, odd_modulus, seed)
-            
+        
+        self.__error_distribution = simple_error_distribution.SimpleErrorDistribution(odd_modulus, seed)    
+        self.__random_vector_generator = rvg.RVG(dimension, odd_modulus, seed)
+        
+    def set_error_distribution(self, new_error_distribution):
+        self.__error_distribution = new_error_distribution
+        
+    def set_random_vector_generator(self, new_random_vector_generator):
+        self.__random_vector_generator = new_random_vector_generator
+        
     def generate_keys(self):
         secret_keys = self.__generate_secret_key()
         evaluation_key = self.__generate_evaluation_key(secret_keys)

@@ -1,5 +1,7 @@
 #!/bin/python
 
+import math
+import numpy
 import simple_error_distribution
 import somewhat_homomorphic_keygen
 import rvg
@@ -20,14 +22,11 @@ class BootstrappableKeygen(object):
     def set_short_error_distribution(self, new_short_error_distribution):
         self.__short_error_distribution = new_short_error_distribution
         
-    def set_long_error_distribution(self, new_long_error_distribution):
-        self.__long_error_distribution = new_long_error_distribution
-        
     def set_short_random_vector_generator(self, new_short_random_vector_generator):
         self.__short_random_vector_generator = new_short_random_vector_generator
         
-    def set_long_random_vector_generator(self, new_long_random_vector_generator):
-        self.__long_random_vector_generator = new_long_random_vector_generator
+    def set_sh_keygen(self, sh_keygen):
+        self.__sh_keygen = sh_keygen
         
     def generate_keys(self):
         secret_key, eval_key, public_key = self.__sh_keygen.generate_keys()
@@ -37,19 +36,19 @@ class BootstrappableKeygen(object):
         return short_secret_key, (eval_key, short_eval_key), public_key
         
     def __generate_short_keys(self, secret_key):
-        short_secret_key = self.__short_random_vector_generator.generate()
+        short_secret_key = [vector for vector in self.__short_random_vector_generator.generate()][0]
         short_eval_key = []
         for i in range(self.__long_dimension):
             tau = 0
             for coefficient_vector in self.__short_random_vector_generator.generate(int(math.log(self.__long_odd_modulus, 2)) + 1):
                 error = self.__short_error_distribution.sample_distribution()
-                b = (coefficient_vector.dot(short_secret_key) + error + int(math.round(float(self.__short_odd_modulus)/self.__long_odd_modulus) * s**tau * secret_key[i])) % self.__short_odd_modulus
+                b = (coefficient_vector.dot(short_secret_key) + error + int(round(float(self.__short_odd_modulus)/self.__long_odd_modulus) * 2 **tau * secret_key[i])) % self.__short_odd_modulus
                 
                 short_eval_key.append((coefficient_vector.tolist(), b))
                 
                 tau += 1
        
-       return short_secret_key, short_eval_key
+        return short_secret_key, numpy.array(short_eval_key)
             
 
 if __name__=="__main__":

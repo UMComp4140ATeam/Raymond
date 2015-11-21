@@ -43,7 +43,7 @@ class SomewhatHomomorphicKeygen(object):
                     tau = 0
                     for coefficient_vector in self.__random_vector_generator.generate(int(math.log(self.__odd_modulus, 2)) + 1):
                         error = self.__error_distribution.sample_distribution()
-                        b = coefficient_vector.dot(secret_keys[curr_depth]) + 2 * error + 2**tau * secret_keys[curr_depth-1][i] * secret_keys[curr_depth-1][j]
+                        b = (coefficient_vector.dot(secret_keys[curr_depth]) + 2 * error + 2**tau * secret_keys[curr_depth-1][i] * secret_keys[curr_depth-1][j]) % self.__odd_modulus
                         # For now I will leave this as a list of tuples, may need to exchange for a dictionary indexed by the tuple (curr_depth, i, j, tau). Also
                         # because numpy is stupid and doesn't properly implement == we have to covert the coefficient_vector to a list
                         evaluation_key.append((coefficient_vector.tolist(), b))

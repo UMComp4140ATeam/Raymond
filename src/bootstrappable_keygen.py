@@ -37,18 +37,18 @@ class BootstrappableKeygen(object):
         
     def __generate_short_keys(self, secret_key):
         short_secret_key = [vector for vector in self.__short_random_vector_generator.generate()][0]
-        short_eval_key = []
+        short_eval_key = {}
         for i in range(self.__long_dimension):
             tau = 0
             for coefficient_vector in self.__short_random_vector_generator.generate(int(math.log(self.__long_odd_modulus, 2)) + 1):
                 error = self.__short_error_distribution.sample_distribution()
                 b = (coefficient_vector.dot(short_secret_key) + error + int(round(float(self.__short_odd_modulus)/self.__long_odd_modulus) * 2 **tau * secret_key[i])) % self.__short_odd_modulus
                 
-                short_eval_key.append((coefficient_vector.tolist(), b))
+                short_eval_key[(i, tau)] = (coefficient_vector.tolist(), b)
                 
                 tau += 1
        
-        return short_secret_key, numpy.array(short_eval_key)
+        return short_secret_key, short_eval_key
             
 
 if __name__=="__main__":

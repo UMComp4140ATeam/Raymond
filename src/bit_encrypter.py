@@ -7,8 +7,6 @@ def BitEncrypter(A, b, mbit):
 
     mbit = 1 & mbit # we only want a bit
 
-    print mbit
-
     m0 = len(A)
     # r is probably not correct...
     r = numpy.ndarray([m0, 1], dtype=numpy.integer) #generate random vector r<-{0,1}^m?
@@ -20,7 +18,7 @@ def BitEncrypter(A, b, mbit):
     v = A.T*r
     w = b.T*r + mbit
 
-    return CipherText(v, w, 0)
+    return Ciphertext(v, w, 0)
 
 def MessageEncrypter(A, b, m):
     bstring = bin(m)

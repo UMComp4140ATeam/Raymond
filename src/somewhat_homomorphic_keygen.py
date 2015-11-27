@@ -34,7 +34,7 @@ class SomewhatHomomorphicKeygen(object):
         return [key for key in self.__random_vector_generator.generate(self.__multiplicative_depth + 1)]
         
     def __generate_evaluation_key(self, secret_keys):
-        evaluation_key = []
+        evaluation_key = {}
         # Assume that 0 is not included because the b component of  the tuple is calculated using curr_depth - 1
         for curr_depth in range(1, self.__multiplicative_depth+1):
             # Paper states to include n as an index to check. This would cause an index out of bounds error, so I'm assuming it was an error in the paper..
@@ -46,9 +46,9 @@ class SomewhatHomomorphicKeygen(object):
                         b = (coefficient_vector.dot(secret_keys[curr_depth]) + 2 * error + 2**tau * secret_keys[curr_depth-1][i] * secret_keys[curr_depth-1][j]) % self.__odd_modulus
                         # For now I will leave this as a list of tuples, may need to exchange for a dictionary indexed by the tuple (curr_depth, i, j, tau). Also
                         # because numpy is stupid and doesn't properly implement == we have to covert the coefficient_vector to a list
-                        evaluation_key.append((coefficient_vector.tolist(), b))
+                        evaluation_key[(curr_depth, i, j, tau)] = (coefficient_vector.tolist(), b)
                         tau += 1
-        return numpy.array(evaluation_key)
+        return evaluation_key
         
     def __generate_public_key(self, secret_keys):
         coefficient_vectors = []

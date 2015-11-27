@@ -8,7 +8,7 @@ from src import bootstrappable_keygen
 
 class MockSomewhatHomomorphicKeygen(object):
     def generate_keys(self):
-        return numpy.array([1, 2, 3, 4]), numpy.array([[4, 3], [1, 0]]), None
+        return numpy.array([1, 2, 3, 4], dtype=numpy.integer), {(1, 0): [4, 3], (1, 1): [1, 0]}, None
 
 class BootstrappableKeygenTest(unittest.TestCase):
     def test_keygen(self):
@@ -24,10 +24,22 @@ class BootstrappableKeygenTest(unittest.TestCase):
         self.assertEqual([4, 2], secret_key.tolist())
         
         # Make sure the first eval_key is the eval key returned by the somewhat homomorphic keygen
-        self.assertEqual([[4, 3], [1, 0]], eval_keys[0].tolist())
+        self.assertEqual({
+            (1, 0): [4, 3],
+            (1, 1): [1, 0]
+        }, eval_keys[0])
         
         # Make sure the short eval key is correct
-        self.assertEqual([[[0, 3], 1], [[1, 2], 1], [[4, 0], 1], [[2, 2], 1], [[2, 3], 1], [[2, 4], 0], [[3, 1], 0], [[4, 2] ,1]], eval_keys[1].tolist())
+        self.assertEqual({
+            (0, 0): ([0, 3], 1), 
+            (0, 1): ([1, 2], 1), 
+            (1, 0): ([4, 0], 1), 
+            (1, 1): ([2, 2], 1), 
+            (2, 0): ([2, 3], 1), 
+            (2, 1): ([2, 4], 0), 
+            (3, 0): ([3, 1], 0), 
+            (3, 1): ([4, 2] ,1)
+        }, eval_keys[1])
         
 
 if __name__=="__main__":

@@ -20,7 +20,14 @@ class SomewhatHomomorphicKeygenTest(unittest.TestCase):
         # Make sure the secret key is correct
         self.assertEqual([0, 3], secret_key.tolist())
         # Ensure that the eval key is correct
-        self.assertEqual([[[1, 2], 0], [[4, 0], 0], [[2, 2], 0], [[2, 3], 1], [[2, 4], 0], [[3, 1], 1]], eval_key.tolist())
+        self.assertEqual({
+            (1, 0, 0, 0): ([1, 2], 0), 
+            (1, 0, 0, 1): ([4, 0], 0), 
+            (1, 0, 1, 0): ([2, 2], 0), 
+            (1, 0, 1, 1): ([2, 3], 1), 
+            (1, 1, 1, 0): ([2, 4], 0), 
+            (1, 1, 1, 1): ([3, 1], 1)
+        }, eval_key)
         # Ensure that the public key is correct
         self.assertEqual([[4, 2], [0, 3], [1, 2], [4, 0]], public_key[0].tolist())
         self.assertEqual([[20], [8], [10], [18]], public_key[1].tolist())

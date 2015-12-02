@@ -1,6 +1,6 @@
 import numpy
 import rvg
-from ciphertext import CipherText
+from ciphertext import Ciphertext
 
 seed = 5684
 def BitEncrypter(A, b, mbit):
@@ -15,8 +15,10 @@ def BitEncrypter(A, b, mbit):
     sp = next(sp)
     r[:, 0] = sp[:] & 1
 
-    v = A.T*r
-    w = b.T*r + mbit
+    # Need to use dot here, because in numpy dot is actually matrix multiplication while * is not.
+    # Very intuitive! \s
+    v = A.T.dot(r)
+    w = b.T.dot(r) + mbit
 
     return Ciphertext(v, w, 0)
 
@@ -25,6 +27,7 @@ def MessageEncrypter(A, b, m):
 
     out = []
     for i in range(2, len(bstring)):
-        out.append(BitEncrypter(A, b, bstring[i]))
+        # Need to convert back to int, so that operation in BitEncrypter do not throw exceptions
+        out.append(BitEncrypter(A, b, int(bstring[i])))
 
     return out

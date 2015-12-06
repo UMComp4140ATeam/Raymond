@@ -38,12 +38,25 @@ class SomewhatHomomorphicKeygen(object):
         # Assume that 0 is not included because the b component of  the tuple is calculated using curr_depth - 1
         for curr_depth in range(1, self.__multiplicative_depth+1):
             # Paper states to include n as an index to check. This would cause an index out of bounds error, so I'm assuming it was an error in the paper..
-            for j in range(self.__dimension):
+            for j in range(self.__dimension+1):
                 for i in range(j + 1):
                     tau = 0
                     for coefficient_vector in self.__random_vector_generator.generate(int(math.log(self.__odd_modulus, 2)) + 1):
                         error = self.__error_distribution.sample_distribution()
-                        b = (coefficient_vector.dot(secret_keys[curr_depth]) + 2 * error + 2**tau * secret_keys[curr_depth-1][i] * secret_keys[curr_depth-1][j]) % self.__odd_modulus
+                        
+                        # Artifacts of the notations used, see start of section 2 of the paper right near the top of page 9. Don't ask me why this is used
+                        # it is incredibly confusing.
+                        # Note: These 1 values are also not used in the inner product
+                        si = 1
+                        if i != 0:
+                            si = secret_keys[curr_depth-1][i-1]
+                            
+                        sj = 1
+                        if j != 0:
+                            si = secret_keys[curr_depth-1][j-1]
+                        
+                        
+                        b = coefficient_vector.dot(secret_keys[curr_depth]) + 2 * error + 2**tau * si * sj
                         # For now I will leave this as a list of tuples, may need to exchange for a dictionary indexed by the tuple (curr_depth, i, j, tau). Also
                         # because numpy is stupid and doesn't properly implement == we have to covert the coefficient_vector to a list
                         evaluation_key[(curr_depth, i, j, tau)] = (coefficient_vector.tolist(), b)

@@ -28,14 +28,14 @@ class HomomorphicArithmetic(object):
     def homomorphic_multiply(self, ciphertext1, ciphertext2):
         h = self.__create_h_dictionary(ciphertext1, ciphertext2)
         v_mult = numpy.zeros(self.__dimension, dtype=numpy.integer)
-        w_add = 0
+        w_mult = 0
         if ciphertext1.level != ciphertext2.level:
             raise ValueError("Levels of ciphertexts ({ciphertext1}, {ciphertext2}) do not match).".format(ciphertext1=ciphertext1, ciphertext2=ciphertext2))
         level = ciphertext1.level + 1
             
         for j in range(self.__dimension+1):
             for i in range(j+1):
-                for tau in range(int(math.log(self.__odd_modulus, 2))):
+                for tau in range(int(math.log(self.__odd_modulus, 2)) + 1):
                     v_mult += h[i, j, tau] * self.__evaluation_key[level, i, j, tau][0]
                     w_mult += h[i, j, tau] * self.__evaluation_key[level, i, j, tau][1]
         return ciphertext.Ciphertext(v_mult, w_mult, level)
@@ -50,7 +50,7 @@ class HomomorphicArithmetic(object):
                 # Making the assumption that the negative are not used since the bits of the value are used and no max int is specified. However,
                 # it may be the case that the value is mod q(odd modulus). Will try if this way does not work.
                 hij = coefficient_c1 * coefficient_c2
-                for tau in range(int(math.log(self.odd_modulus))):
+                for tau in range(int(math.log(self.__odd_modulus, 2)) + 1):
                     h[i, j, tau] = hij & 1
                     hij >>= 1
         return h

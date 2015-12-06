@@ -77,5 +77,12 @@ class HomomorphicArithmeticTest(unittest.TestCase):
         self.assertEquals(13, resulting_ciphertext.ciphertext)
         self.assertEquals(1, resulting_ciphertext.level)
         
+    def test_homomorphic_multi_different_levels(self):
+        ciphertext1 = ciphertext.Ciphertext(numpy.array([4, 1], dtype=numpy.integer), 2, 0)
+        ciphertext2 = ciphertext.Ciphertext(numpy.array([0, 3], dtype=numpy.integer), 1, 1)
+        
+        arithmetic = homomorphic_arithmetic.HomomorphicArithmetic(2, self.odd_modulus, {})
+        self.assertRaises(ValueError, arithmetic.homomorphic_multiply, ciphertext1, ciphertext2)
+        
 if __name__=="__main__":
     print "HomomorphicArithmetic Tests"

@@ -5,10 +5,9 @@ import math
 import numpy
 
 class HomomorphicArithmetic(object):
-    def __init__(self, dimension, odd_modulus, evaluation_key):
+    def __init__(self, dimension, odd_modulus):
         self.__dimension = dimension
         self.__odd_modulus = odd_modulus
-        self.__evaluation_key = evaluation_key
         
     def homomorphic_add(self, ciphertexts):
         if len(ciphertexts) == 0:
@@ -25,7 +24,7 @@ class HomomorphicArithmetic(object):
         
         return ciphertext.Ciphertext(v_add, w_add, level)
 
-    def homomorphic_multiply(self, ciphertext1, ciphertext2):
+    def homomorphic_multiply(self, ciphertext1, ciphertext2, evaluation_key):
         h = self.__create_h_dictionary(ciphertext1, ciphertext2)
         v_mult = numpy.zeros(self.__dimension, dtype=numpy.integer)
         w_mult = 0
@@ -36,8 +35,8 @@ class HomomorphicArithmetic(object):
         for j in range(self.__dimension+1):
             for i in range(j+1):
                 for tau in range(int(math.log(self.__odd_modulus, 2)) + 1):
-                    v_mult += h[i, j, tau] * self.__evaluation_key[level, i, j, tau][0]
-                    w_mult += h[i, j, tau] * self.__evaluation_key[level, i, j, tau][1]
+                    v_mult += h[i, j, tau] * evaluation_key[level, i, j, tau][0]
+                    w_mult += h[i, j, tau] * evaluation_key[level, i, j, tau][1]
         return ciphertext.Ciphertext(v_mult, w_mult, level)
         
     def __create_h_dictionary(self, ciphertext1, ciphertext2):

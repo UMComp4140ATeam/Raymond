@@ -49,7 +49,7 @@ class BootstrappableKeygen(object):
                     
                 b = (coefficient_vector.dot(short_secret_key) + error + int(round(float(self.__short_odd_modulus)/self.__long_odd_modulus) * 2 ** tau * key_element)) % self.__short_odd_modulus
                 
-                short_eval_key[(i, tau)] = (coefficient_vector.tolist(), b)
+                short_eval_key[(i, tau)] = (coefficient_vector, b)
                 
                 tau += 1
        

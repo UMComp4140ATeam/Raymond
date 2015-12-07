@@ -14,13 +14,13 @@ def BitEncrypter(A, b, mbit):
     sp = s.generate()
     sp = next(sp)
     r[:, 0] = sp[:] & 1
-
+    
     # Need to use dot here, because in numpy dot is actually matrix multiplication while * is not.
     # Very intuitive! \s
-    v = A.T.dot(r)
+    v = numpy.asarray(A.T.dot(r).T)
     w = b.T.dot(r) + mbit
-
-    return Ciphertext(v, w, 0)
+    
+    return Ciphertext(numpy.squeeze(v), w.item(0), 0)
 
 def MessageEncrypter(A, b, m):
     bstring = bin(m)

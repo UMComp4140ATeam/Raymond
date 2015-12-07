@@ -20,6 +20,9 @@ class BootstrappableKeygenTest(unittest.TestCase):
         
         secret_key, eval_keys, public_keys = keygen.generate_keys()
         
+        # Have to convertt eval_keys because numpy is dumb. See other somewhat homomorphic keygen test for longer explaination as to why.
+        eval_keys = (eval_keys[0], {key: (value[0].tolist(), value[1]) for key, value in eval_keys[1].iteritems()})
+        
         # Make sure the secret_key is correct
         self.assertEqual([4, 2], secret_key.tolist())
         

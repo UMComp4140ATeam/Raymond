@@ -59,7 +59,7 @@ class SomewhatHomomorphicKeygen(object):
                         b = coefficient_vector.dot(secret_keys[curr_depth]) + 2 * error + 2**tau * si * sj
                         # For now I will leave this as a list of tuples, may need to exchange for a dictionary indexed by the tuple (curr_depth, i, j, tau). Also
                         # because numpy is stupid and doesn't properly implement == we have to covert the coefficient_vector to a list
-                        evaluation_key[(curr_depth, i, j, tau)] = (coefficient_vector.tolist(), b)
+                        evaluation_key[(curr_depth, i, j, tau)] = (coefficient_vector, b)
                         tau += 1
         return evaluation_key
         

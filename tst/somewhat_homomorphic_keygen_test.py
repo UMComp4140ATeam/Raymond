@@ -18,6 +18,10 @@ class SomewhatHomomorphicKeygenTest(unittest.TestCase):
         
         secret_key, eval_key, public_key = keygen.generate_keys()
         
+        # Convert eval_key's numpy arrays to lists because numpy thinks that having a strict == emulating the behaviour of plain python
+        # is not smart which requires hacks like this to be used to get it to work with one of the COMMON python libraries
+        eval_key = {key: (value[0].tolist(), value[1]) for key, value in eval_key.iteritems()}
+        
         # Make sure the secret key is correct
         self.assertEqual([0, 3], secret_key.tolist())
         # Ensure that the eval key is correct

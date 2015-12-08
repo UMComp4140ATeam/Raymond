@@ -1,4 +1,4 @@
-import homomorphic_arithmetic
+from homomorphic_arithmetic import HomomorphicArithmetic
 
 class Layer:
     def __init__(self, gates=[], addOrMult):
@@ -6,16 +6,17 @@ class Layer:
 
         self._gates = gates
 
-    def process(self, dimension, ctexts):
+    def process(self, dimension, odd_modulus, ctexts):
+        arithmetic = HomomorphicArithmetic(dimension, odd_modulus)
         for g in self._gates:
             ntexts = []
             for c in g:
                 ntexts.append(ctexts[c])
 
             if self._addOrMult == 0:
-                homomorphic_arithmetic.homorphic_add(dimension, ntexts)
+                arithmetic.homorphic_add(dimension, ntexts)
             elif self._addOrMult == 1:
-                homomorphic_arithmetic.homorphic_mult(dimension, ntexts)
+                arithmetic.homorphic_mult(dimension, ntexts)
 
 class Circuit:
     def __init__(self, layers=[]):

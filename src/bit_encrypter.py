@@ -10,7 +10,7 @@ def BitEncrypter(A, b, mbit):
     m0 = len(A)
     # r is probably not correct...
     r = numpy.ndarray([m0, 1], dtype=numpy.integer) #generate random vector r<-{0,1}^m?
-    s = rvg.RVG(m0, 1, seed)
+    s = rvg.RVG(m0, 2, seed)
     sp = s.generate()
     sp = next(sp)
     r[:, 0] = sp[:] & 1

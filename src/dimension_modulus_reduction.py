@@ -20,7 +20,7 @@ class DimensionModulusReduction(object):
         v_short = numpy.zeros(self.__short_dimension, dtype=numpy.integer)
         m_short = 0
         for i in range(self.__long_dimension + 1):
-            for tau in range(int(math.log(self.__short_modulus)) + 1):
+            for tau in range(int(math.log(self.__long_modulus, 2))+1):
                 v_short += 2 * bit_coefficient_dict[i, tau] * short_eval_key[i, tau][0]
                 m_short += 2 * bit_coefficient_dict[i, tau] * short_eval_key[i, tau][1]
         v_short %= self.__short_modulus

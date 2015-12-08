@@ -13,8 +13,8 @@ class SomewhatHomomorphicEncryptionScheme(object):
         self.__log = log
         self.__log.debug("Contructing Somewhat Homomorphic Encryption Scheme with\ndimension={dim}, multiplicative_depth={mult_depth}, odd_modulus={odd_mod}, matrix_rows={rows}".format(dim=dimension, mult_depth=multiplicative_depth, odd_mod=odd_modulus, rows=matrix_rows))
         self.__keygen = somewhat_homomorphic_keygen.SomewhatHomomorphicKeygen(dimension, multiplicative_depth, odd_modulus, matrix_rows, long_seed, log)
-        self.__decrypt_alg = bootstrappable_decryption.BootstrappableDecryption(odd_modulus)
-        self.__homomorphic_arithmetic = homomorphic_arithmetic.HomomorphicArithmetic(dimension, odd_modulus)
+        self.__decrypt_alg = bootstrappable_decryption.BootstrappableDecryption(odd_modulus, log)
+        self.__homomorphic_arithmetic = homomorphic_arithmetic.HomomorphicArithmetic(dimension, odd_modulus, log)
         
     def encrypt(self, public_key, message):
         return bit_encrypter.MessageEncrypter(public_key[0], public_key[1], message)

@@ -18,53 +18,33 @@ class HomomorphicArithmeticTest(unittest.TestCase):
         ]
 
     def test_homomorphic_add_empty_list(self):
-<<<<<<< HEAD
-        self.assertIsNone(homomorphic_arithmetic.homomorphic_add(self.dimension, []))
-
-    def test_homomorphic_add_single_ciphertext(self):
-        resulting_ciphertext = homomorphic_arithmetic.homomorphic_add(self.dimension, [self.ciphertexts[0]])
-
-=======
         arithmetic = homomorphic_arithmetic.HomomorphicArithmetic(self.dimension, self.odd_modulus)
         self.assertIsNone(arithmetic.homomorphic_add([]))
-        
+
     def test_homomorphic_add_single_ciphertext(self):
         arithmetic = homomorphic_arithmetic.HomomorphicArithmetic(self.dimension, self.odd_modulus)
         resulting_ciphertext = arithmetic.homomorphic_add([self.ciphertexts[0]])
-        
->>>>>>> 64bb4e92d17fccd4b0588cc1bf18ec10408f14bd
+
         self.assertEquals(self.ciphertexts[0].coefficient_vector.tolist(), resulting_ciphertext.coefficient_vector.tolist())
         self.assertEquals(self.ciphertexts[0].ciphertext, resulting_ciphertext.ciphertext)
         self.assertEquals(self.ciphertexts[0].level, resulting_ciphertext.level)
 
     def test_homomorphic_add_multiple_ciphertexts(self):
-<<<<<<< HEAD
-        resulting_ciphertext = homomorphic_arithmetic.homomorphic_add(self.dimension, self.ciphertexts)
-
-=======
         arithmetic = homomorphic_arithmetic.HomomorphicArithmetic(self.dimension, self.odd_modulus)
         resulting_ciphertext = arithmetic.homomorphic_add(self.ciphertexts)
-        
->>>>>>> 64bb4e92d17fccd4b0588cc1bf18ec10408f14bd
+
         self.assertEquals([5, 5, 5], resulting_ciphertext.coefficient_vector.tolist())
         self.assertEquals(4, resulting_ciphertext.ciphertext)
         self.assertEquals(0, resulting_ciphertext.level)
 
     def test_homomorphic_add_different_levels(self):
-<<<<<<< HEAD
-        self.assertRaises(ValueError, homomorphic_arithmetic.homomorphic_add, 3, [self.ciphertexts[0], ciphertext.Ciphertext(numpy.array([1, 1, 1], dtype=numpy.integer), 1, 1)])
-
-    def test_homomorphic_add_different_dimensions(self):
-        self.assertRaises(ValueError, homomorphic_arithmetic.homomorphic_add, 3, [ciphertext.Ciphertext(numpy.array([1, 1, 2, 1], dtype=numpy.integer), 1, 0)])
-
-=======
         arithmetic = homomorphic_arithmetic.HomomorphicArithmetic(self.dimension, self.odd_modulus)
         self.assertRaises(ValueError, arithmetic.homomorphic_add, [self.ciphertexts[0], ciphertext.Ciphertext(numpy.array([1, 1, 1], dtype=numpy.integer), 1, 1)])
-        
+
     def test_homomorphic_add_different_dimensions(self):
         arithmetic = homomorphic_arithmetic.HomomorphicArithmetic(self.dimension, self.odd_modulus)
         self.assertRaises(ValueError, arithmetic.homomorphic_add, [ciphertext.Ciphertext(numpy.array([1, 1, 2, 1], dtype=numpy.integer), 1, 0)])
-        
+
     def test_homomorphic_multi(self):
         evaluation_key = {
             (1, 0, 0, 0): (numpy.array([1, 1], dtype=numpy.integer), 1),
@@ -86,24 +66,24 @@ class HomomorphicArithmeticTest(unittest.TestCase):
             (1, 2, 2, 1): (numpy.array([0, 1], dtype=numpy.integer), 4),
             (1, 2, 2, 2): (numpy.array([2, 2], dtype=numpy.integer), 1)
         }
-        
+
         ciphertext1 = ciphertext.Ciphertext(numpy.array([4, 1], dtype=numpy.integer), 2, 0)
         ciphertext2 = ciphertext.Ciphertext(numpy.array([0, 3], dtype=numpy.integer), 1, 0)
-        
+
         arithmetic = homomorphic_arithmetic.HomomorphicArithmetic(2, self.odd_modulus)
         resulting_ciphertext = arithmetic.homomorphic_multiply(ciphertext1, ciphertext2, evaluation_key)
-        
+
         self.assertEquals([9, 12], resulting_ciphertext.coefficient_vector.tolist())
         self.assertEquals(13, resulting_ciphertext.ciphertext)
         self.assertEquals(1, resulting_ciphertext.level)
-        
+
     def test_homomorphic_multi_different_levels(self):
         ciphertext1 = ciphertext.Ciphertext(numpy.array([4, 1], dtype=numpy.integer), 2, 0)
         ciphertext2 = ciphertext.Ciphertext(numpy.array([0, 3], dtype=numpy.integer), 1, 1)
-        
+
         arithmetic = homomorphic_arithmetic.HomomorphicArithmetic(2, self.odd_modulus)
         self.assertRaises(ValueError, arithmetic.homomorphic_multiply, ciphertext1, ciphertext2, {})
-        
+
 >>>>>>> 64bb4e92d17fccd4b0588cc1bf18ec10408f14bd
 if __name__=="__main__":
     print "HomomorphicArithmetic Tests"

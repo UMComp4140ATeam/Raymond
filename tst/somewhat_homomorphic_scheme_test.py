@@ -1,9 +1,10 @@
 #!/bin/python
 # -*- coding: utf-8 -*-
 
+import logging
 import unittest
 
-from src import homomorphic_encryption_scheme
+from src import somewhat_homomorphic_scheme
 
 def test_function(arithmetic, ciphertexts, evaluation_key):
     output_c1 = arithmetic.homomorphic_add(ciphertexts[0:4])
@@ -12,27 +13,33 @@ def test_function(arithmetic, ciphertexts, evaluation_key):
     
     return [final_output]
 
-class HomomorphicEncryptionSchemeTest(unittest.TestCase):
-    @unittest.skip("Testing without bootstrapping")
+class SomewhatHomomorphicEncryptionSchemeTest(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        cls.log = logging.getLogger(__name__)
+        cls.log.setLevel(logging.DEBUG)
+        cls.log.addHandler(logging.FileHandler('somewhat_homomorphic_tests_output.log'))
+
     def test_integration_simple_full_encrypt_and_evaluate(self):
         message1 = 11
         message2 = 2
         
-        encryption_scheme = homomorphic_encryption_scheme.HomomorphicEncryptionScheme(2, 4, 1, 3, 5, 6)
+        # Have to be careful about the values for the parameters selected. If they are too low the scheme won't work
+        encryption_scheme = somewhat_homomorphic_scheme.SomewhatHomomorphicEncryptionScheme(4, 1, 17, 16, log=self.log)
         
-        secret_key, evaluation_keys, public_key = encryption_scheme.keygen()
+        secret_key, evaluation_key, public_key = encryption_scheme.keygen()
         
         ciphertext1 = encryption_scheme.encrypt(public_key, message1)
         ciphertext2 = encryption_scheme.encrypt(public_key, message2)
-        #print ciphertext1, ciphertext2
+        
         ciphertexts = ciphertext1
         ciphertexts.extend(ciphertext2)
         
-        resulting_ciphertexts = encryption_scheme.evaluate(test_function, ciphertexts, evaluation_keys)
+        resulting_ciphertexts = encryption_scheme.evaluate(test_function, ciphertexts, evaluation_key)
         
         message = encryption_scheme.decrypt(secret_key, resulting_ciphertexts)
         
         self.assertEquals(1, message)
         
 if __name__=="__main__":
-    print "HomomorphicEncryptionScheme Tests"
+    print "SomewhatHomomorphicEncryptionScheme Tests"

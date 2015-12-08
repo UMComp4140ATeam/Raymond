@@ -18,5 +18,5 @@ class RVG(object):
         for i in range(0, count):
             v = numpy.ndarray(self.__n__, dtype=numpy.integer)
             for j in range(0, self.__n__):
-                v[j] = self.__g__.randint(0, self.__q__) #% self.q #.randint(0, self.q)
+                v[j] = self.__g__.randint(0, self.__q__-1) #% self.q #.randint(0, self.q)
             yield v

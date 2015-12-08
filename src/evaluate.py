@@ -35,12 +35,8 @@ class Circuit:
         for l in self._layers:
             l.process(dimension, odd_modulus, ctexts, evaluation_key)
 
-def eval(dimension, f, ctexts):
+def eval(dimension, odd_modulus, evaluation_key, f, ctexts):
     "f is a circuit, c is an array of ciphertexts"
-    return f.process(dimension, ctexts)
+    return f.process(dimension, odd_modulus, ctexts, evaluation_key)
 
-###Example Construction###
-
-#Construct Layer(s)#
-#Construct
 

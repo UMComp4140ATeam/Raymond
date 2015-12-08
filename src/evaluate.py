@@ -23,14 +23,17 @@ class Layer:
                 ret.append(arithmetic.homomorphic_add(ntexts))
             elif self._addOrMult == 1:
                 ret.append(arithmetic.homomorphic_multiply(ntexts[0], ntexts[1], evaluation_key))
+
+        n = ctexts + ret
+        ctexts[:] = n[:]
         return ret
 class Circuit:
     def __init__(self, layers=[]):
         self._layers = layers
 
-    def process(self, dimension, ctexts):
+    def process(self, dimension, odd_modulus, ctexts, evaluation_key):
         for l in self._layers:
-            l.process(dimension, ctexts)
+            l.process(dimension, odd_modulus, ctexts, evaluation_key)
 
 def eval(dimension, f, ctexts):
     "f is a circuit, c is an array of ciphertexts"

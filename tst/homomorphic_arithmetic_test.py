@@ -16,7 +16,6 @@ class HomomorphicArithmeticTest(unittest.TestCase):
             ciphertext.Ciphertext(numpy.array([3, 2, 1], dtype=numpy.integer), 2, 0),
             ciphertext.Ciphertext(numpy.array([1, 1, 1], dtype=numpy.integer), 1, 0)
         ]
-
     def test_homomorphic_add_empty_list(self):
         arithmetic = homomorphic_arithmetic.HomomorphicArithmetic(self.dimension, self.odd_modulus)
         self.assertIsNone(arithmetic.homomorphic_add([]))
@@ -84,6 +83,5 @@ class HomomorphicArithmeticTest(unittest.TestCase):
         arithmetic = homomorphic_arithmetic.HomomorphicArithmetic(2, self.odd_modulus)
         self.assertRaises(ValueError, arithmetic.homomorphic_multiply, ciphertext1, ciphertext2, {})
 
->>>>>>> 64bb4e92d17fccd4b0588cc1bf18ec10408f14bd
 if __name__=="__main__":
     print "HomomorphicArithmetic Tests"

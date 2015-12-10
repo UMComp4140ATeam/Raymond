@@ -15,9 +15,10 @@ class SomewhatHomomorphicEncryptionScheme(object):
         self.__keygen = somewhat_homomorphic_keygen.SomewhatHomomorphicKeygen(dimension, multiplicative_depth, odd_modulus, matrix_rows, long_seed, log)
         self.__decrypt_alg = bootstrappable_decryption.BootstrappableDecryption(odd_modulus, log)
         self.__homomorphic_arithmetic = homomorphic_arithmetic.HomomorphicArithmetic(dimension, odd_modulus, log)
+        self.__odd_modulus = odd_modulus
         
     def encrypt(self, public_key, message):
-        return bit_encrypter.MessageEncrypter(public_key[0], public_key[1], message)
+        return bit_encrypter.MessageEncrypter(public_key[0], public_key[1], message, self.__odd_modulus, log=self.__log)
         
     def decrypt(self, secret_key, ciphertexts):
         return self.__decrypt_alg.decrypt(ciphertexts, secret_key)

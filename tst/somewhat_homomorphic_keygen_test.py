@@ -26,22 +26,22 @@ class SomewhatHomomorphicKeygenTest(unittest.TestCase):
         self.assertEqual([0, 3], secret_key.tolist())
         # Ensure that the eval key is correct
         self.assertEqual({
-            (1, 0, 0, 0): ([1, 2], 7), 
-            (1, 0, 0, 1): ([4, 0], 4), 
-            (1, 0, 1, 0): ([2, 2], 12), 
-            (1, 0, 1, 1): ([2, 3], 19),
-            (1, 0, 2, 0): ([4, 2], 8),
-            (1, 0, 2, 1): ([0, 3], 15),
-            (1, 1, 1, 0): ([2, 4], 28), 
-            (1, 1, 1, 1): ([3, 1], 35),
-            (1, 1, 2, 0): ([1, 2], 16),
-            (1, 1, 2, 1): ([4, 0], 18),
-            (1, 2, 2, 0): ([2, 2], 10),
-            (1, 2, 2, 1): ([2, 3], 17)
+            (1, 0, 0, 0): ([1, 2], 1), 
+            (1, 0, 0, 1): ([4, 0], 0), 
+            (1, 0, 1, 0): ([2, 2], 0), 
+            (1, 0, 1, 1): ([2, 3], 1),
+            (1, 0, 2, 0): ([4, 2], 0),
+            (1, 0, 2, 1): ([0, 3], 1),
+            (1, 1, 1, 0): ([2, 4], 0), 
+            (1, 1, 1, 1): ([3, 1], 1),
+            (1, 1, 2, 0): ([1, 2], 0),
+            (1, 1, 2, 1): ([4, 0], 0),
+            (1, 2, 2, 0): ([2, 2], 0),
+            (1, 2, 2, 1): ([2, 3], 1)
         }, eval_key)
         # Ensure that the public key is correct
         self.assertEqual([[2, 4], [3, 1], [4, 2], [0, 3]], public_key[0].tolist())
-        self.assertEqual([[16], [16], [22], [8]], public_key[1].tolist())
+        self.assertEqual([[0], [0], [0], [0]], public_key[1].tolist())
 
 if __name__=="__main__":
     print "SomewhatHomomorphicKeygen Tests"

@@ -13,9 +13,10 @@ class HomomorphicEncryptionScheme(object):
         self.__decrypt_alg = bootstrappable_decryption.BootstrappableDecryption(short_odd_modulus)
         self.__dimension_modulus_reduction = dimension_modulus_reduction.DimensionModulusReduction(short_dimension, long_dimension, short_odd_modulus, long_odd_modulus)
         self.__homomorphic_arithmetic = homomorphic_arithmetic.HomomorphicArithmetic(long_dimension, long_odd_modulus)
+        self.__long_odd_modulus = long_odd_modulus
         
     def encrypt(self, public_key, message):
-        return bit_encrypter.MessageEncrypter(public_key[0], public_key[1], message)
+        return bit_encrypter.MessageEncrypter(public_key[0], public_key[1], message, self.__long_odd_modulus)
         
     def decrypt(self, secret_key, ciphertexts):
         return self.__decrypt_alg.decrypt(ciphertexts, secret_key)

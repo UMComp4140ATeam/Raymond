@@ -43,7 +43,6 @@ class SomewhatHomomorphicKeygen(object):
         evaluation_key = {}
         # Assume that 0 is not included because the b component of  the tuple is calculated using curr_depth - 1
         for curr_depth in range(1, self.__multiplicative_depth+1):
-            # Paper states to include n as an index to check. This would cause an index out of bounds error, so I'm assuming it was an error in the paper..
             for j in range(self.__dimension+1):
                 for i in range(j + 1):
                     tau = 0
@@ -65,7 +64,7 @@ class SomewhatHomomorphicKeygen(object):
                             sj = secret_keys[curr_depth-1][j-1]
                         
                         self.__log.debug("Calculating b. Inputs: cvector={cvector}, skey={skey}, error={error}, tau={tau}, si={si}, sj={sj}".format(cvector=coefficient_vector, skey=secret_keys[curr_depth], error=error, tau=tau, si=si, sj=sj))
-                        b = coefficient_vector.dot(secret_keys[curr_depth]) + 2 * error + 2**tau * si * sj
+                        b = (coefficient_vector.dot(secret_keys[curr_depth]) + 2 * error + 2**tau * si * sj) % self.__odd_modulus
                         # For now I will leave this as a list of tuples, may need to exchange for a dictionary indexed by the tuple (curr_depth, i, j, tau). Also
                         # because numpy is stupid and doesn't properly implement == we have to covert the coefficient_vector to a list
                         evaluation_key[(curr_depth, i, j, tau)] = (coefficient_vector, b)
@@ -88,7 +87,7 @@ class SomewhatHomomorphicKeygen(object):
         self.__log.debug("Errors={errors}".format(errors=errors_matrix))
         
         secret_key_vector = numpy.matrix(secret_keys[0]).transpose()
-        b = coefficient_matrix.dot(secret_key_vector) + 2 * errors_matrix
+        b = numpy.mod(coefficient_matrix.dot(secret_key_vector) + 2 * errors_matrix, self.__odd_modulus)
         self.__log.debug("B={b}".format(b=b))
         return coefficient_matrix, b
 

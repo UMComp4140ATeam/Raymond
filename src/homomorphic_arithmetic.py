@@ -25,6 +25,8 @@ class HomomorphicArithmetic(object):
                 raise ValueError("{ciphertext} did not have a multiplication level that matched {level}.".format(ciphertext=curr_ciphertext, level=level))
             v_add = v_add + curr_ciphertext.coefficient_vector
             w_add = w_add + curr_ciphertext.ciphertext
+        v_add = numpy.mod(v_add, self.__odd_modulus)
+        w_add %= self.__odd_modulus
         self.__log.debug("Resulting ciphertext={ciphertext}".format(ciphertext=(v_add, w_add, level)))
         return ciphertext.Ciphertext(v_add, w_add, level)
 
@@ -44,6 +46,8 @@ class HomomorphicArithmetic(object):
                     self.__log.debug("Current loop i={i}, j={j}, tau={tau}, h[i,j,tau]={h}, eval_key[level, i, j , tau]={eval_key}".format(i=i, j=j, tau=tau, h=h[i, j, tau], eval_key=evaluation_key[level, i, j, tau]))
                     v_mult += h[i, j, tau] * evaluation_key[level, i, j, tau][0]
                     w_mult += h[i, j, tau] * evaluation_key[level, i, j, tau][1]
+        v_mult = numpy.mod(v_mult, self.__odd_modulus)
+        w_mult %= self.__odd_modulus
         self.__log.debug("Resulting ciphertext={ciphertext}".format(ciphertext=(v_mult, w_mult, level)))
         return ciphertext.Ciphertext(v_mult, w_mult, level)
         

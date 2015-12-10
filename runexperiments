@@ -1,0 +1,8 @@
+#!/bin/bash
+
+OLDPYTHONPATH=$PYTHONPATH
+export PYTHONPATH=$PYTHONPATH:./
+
+python -m unittest discover -p "*_experiment.py"
+
+export PYTHONPATH=OLDPYTHONPATH

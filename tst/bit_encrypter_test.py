@@ -45,10 +45,10 @@ class BitEncrypterTest(unittest.TestCase):
         vectors = [r]
         num_vectors = 1
         
-        resulting_ciphertext = bit_encrypter.BitEncrypter(self.A, self.b, 1)
+        resulting_ciphertext = bit_encrypter.BitEncrypter(self.A, self.b, 1, 5)
         
-        self.assertEqual([5, 4, 9, 10], resulting_ciphertext.coefficient_vector.T.tolist())
-        self.assertEqual(10, resulting_ciphertext.ciphertext)
+        self.assertEqual([0, 4, 4, 0], resulting_ciphertext.coefficient_vector.T.tolist())
+        self.assertEqual(0, resulting_ciphertext.ciphertext)
         self.assertEqual(0, resulting_ciphertext.level)
         
     def test_message_encrypt(self):
@@ -63,17 +63,17 @@ class BitEncrypterTest(unittest.TestCase):
         vectors = r
         num_vectors = 4
         
-        resulting_ciphertexts = bit_encrypter.MessageEncrypter(self.A, self.b, 0xb)
+        resulting_ciphertexts = bit_encrypter.MessageEncrypter(self.A, self.b, 0xb, 5)
         
         self.assertEqual(4, len(resulting_ciphertexts))
-        self.assertEqual([5, 4, 9, 10], resulting_ciphertexts[0].coefficient_vector.T.tolist())
-        self.assertEqual(10, resulting_ciphertexts[0].ciphertext)
-        self.assertEqual([2, 4, 5, 6], resulting_ciphertexts[1].coefficient_vector.T.tolist())
-        self.assertEqual(6, resulting_ciphertexts[1].ciphertext)
+        self.assertEqual([0, 4, 4, 0], resulting_ciphertexts[0].coefficient_vector.T.tolist())
+        self.assertEqual(0, resulting_ciphertexts[0].ciphertext)
+        self.assertEqual([2, 4, 0, 1], resulting_ciphertexts[1].coefficient_vector.T.tolist())
+        self.assertEqual(1, resulting_ciphertexts[1].ciphertext)
         self.assertEqual([1, 4, 3, 3], resulting_ciphertexts[2].coefficient_vector.T.tolist())
-        self.assertEqual(10, resulting_ciphertexts[2].ciphertext)
-        self.assertEqual([3, 1, 6, 4], resulting_ciphertexts[3].coefficient_vector.T.tolist())
-        self.assertEqual(6, resulting_ciphertexts[3].ciphertext)
+        self.assertEqual(0, resulting_ciphertexts[2].ciphertext)
+        self.assertEqual([3, 1, 1, 4], resulting_ciphertexts[3].coefficient_vector.T.tolist())
+        self.assertEqual(1, resulting_ciphertexts[3].ciphertext)
         
 if __name__=="__main__":
     print "BitEncrypter tests"

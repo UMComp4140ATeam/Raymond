@@ -33,7 +33,7 @@ class HomomorphicArithmeticTest(unittest.TestCase):
         arithmetic = homomorphic_arithmetic.HomomorphicArithmetic(self.dimension, self.odd_modulus)
         resulting_ciphertext = arithmetic.homomorphic_add(self.ciphertexts)
         
-        self.assertEquals([5, 5, 5], resulting_ciphertext.coefficient_vector.tolist())
+        self.assertEquals([0, 0, 0], resulting_ciphertext.coefficient_vector.tolist())
         self.assertEquals(4, resulting_ciphertext.ciphertext)
         self.assertEquals(0, resulting_ciphertext.level)
         
@@ -73,8 +73,8 @@ class HomomorphicArithmeticTest(unittest.TestCase):
         arithmetic = homomorphic_arithmetic.HomomorphicArithmetic(2, self.odd_modulus)
         resulting_ciphertext = arithmetic.homomorphic_multiply(ciphertext1, ciphertext2, evaluation_key)
         
-        self.assertEquals([9, 12], resulting_ciphertext.coefficient_vector.tolist())
-        self.assertEquals(13, resulting_ciphertext.ciphertext)
+        self.assertEquals([4, 2], resulting_ciphertext.coefficient_vector.tolist())
+        self.assertEquals(3, resulting_ciphertext.ciphertext)
         self.assertEquals(1, resulting_ciphertext.level)
         
     def test_homomorphic_multi_different_levels(self):

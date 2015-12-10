@@ -11,12 +11,12 @@ class HomomorphicArithmetic(object):
         self.__odd_modulus = odd_modulus
         self.__log = log
         self.__log.info("Creating HomomorphicArithmetic with\ndimension={dim}, odd_modulus={odd_mod}".format(dim=dimension, odd_mod=odd_modulus))
-        
+
     def homomorphic_add(self, ciphertexts):
         self.__log.debug("Adding ciphertexts={ciphertexts}".format(ciphertexts=ciphertexts))
         if len(ciphertexts) == 0:
             return None
-        
+
         v_add = numpy.zeros(self.__dimension, dtype=numpy.integer)
         w_add = 0
         level = ciphertexts[0].level
@@ -35,11 +35,11 @@ class HomomorphicArithmetic(object):
         if ciphertext1.level != ciphertext2.level:
             raise ValueError("Levels of ciphertexts ({ciphertext1}, {ciphertext2}) do not match).".format(ciphertext1=ciphertext1, ciphertext2=ciphertext2))
         h = self.__create_h_dictionary(ciphertext1, ciphertext2)
-        self.__log.debug("Bit dictionary={bit_dict}".format(bit_dict=h)) 
+        self.__log.debug("Bit dictionary={bit_dict}".format(bit_dict=h))
         v_mult = numpy.zeros(self.__dimension, dtype=numpy.integer)
         w_mult = 0
         level = ciphertext1.level + 1
-            
+
         for j in range(self.__dimension+1):
             for i in range(j+1):
                 for tau in range(int(math.log(self.__odd_modulus, 2)) + 1):
@@ -50,7 +50,7 @@ class HomomorphicArithmetic(object):
         w_mult %= self.__odd_modulus
         self.__log.debug("Resulting ciphertext={ciphertext}".format(ciphertext=(v_mult, w_mult, level)))
         return ciphertext.Ciphertext(v_mult, w_mult, level)
-        
+
     def __create_h_dictionary(self, ciphertext1, ciphertext2):
         h = {}
         for j in range(self.__dimension+1):
@@ -59,7 +59,7 @@ class HomomorphicArithmetic(object):
                 coefficient_c1 = self.__get_coefficient_value_from_ciphertext(ciphertext1, i)
                 coefficient_c2 = self.__get_coefficient_value_from_ciphertext(ciphertext2, j)
                 self.__log.debug("Coefficients=({c1}, {c2})".format(c1=coefficient_c1, c2=coefficient_c2))
-                
+
                 # Making the assumption that the negative are not used since the bits of the value are used and no max int is specified. However,
                 # it may be the case that the value is mod q(odd modulus). Will try if this way does not work.
                 hij = coefficient_c1 * coefficient_c2
